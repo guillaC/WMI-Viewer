@@ -28,7 +28,11 @@ namespace WMI_view
             lvData.Items.Clear();
             Cursor = Cursors.WaitCursor;
             result = WMIGetter.select(query);
-            if (result.Count == 0) return;
+            if (result.Count == 0)
+            {
+                Cursor = Cursors.Default;
+                return;
+            }
             foreach (String column in result[result.ElementAt(0).Key].Keys) lvData.Columns.Add(column);
             foreach (Dictionary<String, String> entry in result.Values)
             {
