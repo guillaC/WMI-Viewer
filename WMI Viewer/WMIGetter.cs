@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Management;
 
 namespace WMI_view
@@ -10,7 +11,7 @@ namespace WMI_view
         {
             Dictionary<String, Dictionary<String, String>> result = new Dictionary<String, Dictionary<String, String>>();
             System.Management.ObjectQuery aObjectQuery = new System.Management.ObjectQuery(request);
-            ManagementObjectSearcher aManagementObjectSearcher = new ManagementObjectSearcher(new ManagementScope(), aObjectQuery); 
+            ManagementObjectSearcher aManagementObjectSearcher = new ManagementObjectSearcher(new ManagementScope(), aObjectQuery);
             ManagementObjectCollection aManagementObjectCollection = aManagementObjectSearcher.Get();
             foreach (ManagementObject mo in aManagementObjectCollection)
             {
@@ -22,9 +23,10 @@ namespace WMI_view
                         if (prop.Value != null)
                         {
                             pResult.Add(prop.Name, prop.Value.ToString());
-                        } else
+                        }
+                        else
                         {
-                            pResult.Add(prop.Name, ""); 
+                            pResult.Add(prop.Name, "");
                         }
                     }
                 }
@@ -32,5 +34,43 @@ namespace WMI_view
             }
             return result;
         }
+
+        public static List<List<String>> getProperties(string pClass)
+        {
+            List<List<String>> result = new List<List<String>>();
+            ManagementClass processClass = new ManagementClass(pClass);
+            processClass.Options.UseAmendedQualifiers = true;
+            PropertyDataCollection properties = processClass.Properties; 
+            foreach (PropertyData prop in properties)
+            {
+                List<String> pResult = new List<String>();
+                pResult.Add(prop.Name);
+                pResult.Add(prop.Type.ToString());
+                pResult.Add(prop.Origin);
+                foreach (QualifierData q in prop.Qualifiers)
+                {
+                    if (q.Name.Equals("Description")) pResult.Add((String)processClass.GetPropertyQualifierValue(prop.Name, q.Name));
+                }
+                result.Add(pResult);
+            }
+            return result;
+        }
+
+        public static List<List<String>> getMethods(string pClass)
+        {
+            List<List<String>> result = new List<List<String>>();
+            ManagementClass processClass = new ManagementClass(pClass);
+            processClass.Options.UseAmendedQualifiers = true;
+            MethodDataCollection methods = processClass.Methods;
+            foreach (MethodData method in methods)
+            {
+                List<String> pResult = new List<string>();
+                pResult.Add(method.Name);
+                pResult.Add(method.Qualifiers["Description"].Value.ToString());
+                result.Add(pResult);
+            }
+            return result;
+        }
+
     }
 }

@@ -12,28 +12,63 @@ namespace WMI_view
         public frmWmiViewer()
         {
             InitializeComponent();
-            result = new Dictionary<String, Dictionary<String, String>>();
             updateLbox();
         }
 
         private void updateLbox()
         {
+            Dictionary<String, Dictionary<String, String>> result = new Dictionary<String, Dictionary<String, String>>();
             result = WMIGetter.select("SELECT * FROM Meta_Class");
-            foreach (String key in result.Keys) lbClasses.Items.Add(key.Substring(key.IndexOf(":") + 1));   
+            foreach (String key in result.Keys) lbClasses.Items.Add(key.Substring(key.IndexOf(":") + 1));
         }
 
-        private void updateLview(String query)
+        private void lvClear()
         {
-            lvData.Columns.Clear();
-            lvData.Items.Clear();
+            lvInstances.Columns.Clear();
+            lvInstances.Items.Clear();
+
+            lvProperties.Items.Clear();
+            lvMethods.Items.Clear();
+        }
+
+        private void updateLViewProperties(string pClass)
+        {
+            List<List<String>> result = new List<List<String>>();
+            result = WMIGetter.getProperties(pClass);
+            if (result == null) return;
+
+            foreach (List<String> entry in result)
+            {
+                lvProperties.Items.Add(new ListViewItem(entry.ToArray()));
+            }
+        }
+
+        private void updateLViewMethods(string pClass)
+        {
+            List<List<String>> result = new List<List<String>>();
+            result = WMIGetter.getMethods(pClass);
+            if (result == null) return;
+
+            foreach (List<String> entry in result)
+            {
+                lvMethods.Items.Add(new ListViewItem(entry.ToArray()));
+            }
+        }
+
+        private void updateLViewInstances(String query)
+        {
             Cursor = Cursors.WaitCursor;
             result = WMIGetter.select(query);
-            if (result.Count == 0) return;
-            foreach (String column in result[result.ElementAt(0).Key].Keys) lvData.Columns.Add(column);
+            if (result.Count == 0)
+            {
+                Cursor = Cursors.Default;
+                return;
+            }
+            foreach (String column in result[result.ElementAt(0).Key].Keys) lvInstances.Columns.Add(column);
             foreach (Dictionary<String, String> entry in result.Values)
             {
                 ListViewItem lvi = new ListViewItem(entry.Values.ToArray());
-                lvData.Items.Add(lvi);
+                lvInstances.Items.Add(lvi);
             }
             Cursor = Cursors.Default;
         }
@@ -42,15 +77,40 @@ namespace WMI_view
         {
             if (lbClasses.SelectedItems.Count == 1)
             {
-                string query = "SELECT * FROM " + lbClasses.SelectedItems[0].ToString();
-                updateLview(query);
+                string pClass = lbClasses.SelectedItems[0].ToString();
+                string query = "SELECT * FROM " + pClass;
+
+                lvClear();
+
+                updateLViewInstances(query);
+                updateLViewProperties(pClass);
+                updateLViewMethods(pClass);
+                
                 tbQuerry.Text = query;
             }
         }
 
         private void btnExec_Click(object sender, EventArgs e)
         {
-            updateLview(tbQuerry.Text);
+            updateLViewInstances(tbQuerry.Text);
+        }
+
+        private void lvProperties_DoubleClick(object sender, EventArgs e)
+        {
+            if (lvProperties.SelectedItems.Count == 1 && lvProperties.SelectedItems[0].SubItems.Count == 4)
+            {
+                    frmDescription frmDescription = new frmDescription(lvProperties.SelectedItems[0].Text, lvProperties.SelectedItems[0].SubItems[3].Text);
+                    frmDescription.ShowDialog();
+            }
+        }
+
+        private void lvMethods_DoubleClick(object sender, EventArgs e)
+        {
+            if (lvMethods.SelectedItems.Count == 1 && lvMethods.SelectedItems[0].SubItems.Count == 2)
+            {
+                frmDescription frmDescription = new frmDescription(lvMethods.SelectedItems[0].Text, lvMethods.SelectedItems[0].SubItems[1].Text);
+                frmDescription.ShowDialog();
+            }
         }
     }
 }
