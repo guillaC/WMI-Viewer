@@ -64,7 +64,11 @@ namespace WMI_view
                 Cursor = Cursors.Default;
                 return;
             }
+<<<<<<< HEAD
             foreach (String column in result[result.ElementAt(0).Key].Keys) lvInstances.Columns.Add(column);
+=======
+            foreach (String column in result[result.ElementAt(0).Key].Keys) lvData.Columns.Add(column);
+>>>>>>> 665ab9995c3d308e5e9ab63280a992ac8e73824b
             foreach (Dictionary<String, String> entry in result.Values)
             {
                 ListViewItem lvi = new ListViewItem(entry.Values.ToArray());
