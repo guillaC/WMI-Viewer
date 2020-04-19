@@ -40,7 +40,7 @@ namespace WMI_view
             List<List<String>> result = new List<List<String>>();
             ManagementClass processClass = new ManagementClass(pClass);
             processClass.Options.UseAmendedQualifiers = true;
-            PropertyDataCollection properties = processClass.Properties; 
+            PropertyDataCollection properties = processClass.Properties;
             foreach (PropertyData prop in properties)
             {
                 List<String> pResult = new List<String>();
@@ -67,10 +67,30 @@ namespace WMI_view
                 List<String> pResult = new List<string>();
                 pResult.Add(method.Name);
                 pResult.Add(method.Qualifiers["Description"].Value.ToString());
+                String ineP = "";
+                String outP = "";
+
+                if (method.InParameters != null)
+                {
+                    foreach (PropertyData parameter in method.InParameters.Properties)
+                    {
+                        ineP += "[" + parameter.Type.ToString() + "] " + parameter.Name + "; ";
+                    }
+                }
+
+                if (method.OutParameters != null)
+                {
+                    foreach (PropertyData parameter in method.OutParameters.Properties)
+                    {
+                        outP += "[" +parameter.Type.ToString() + "] " + parameter.Name + "; ";
+                    }
+                }
+
+                pResult.Add(ineP);
+                pResult.Add(outP);
                 result.Add(pResult);
             }
             return result;
         }
-
     }
 }

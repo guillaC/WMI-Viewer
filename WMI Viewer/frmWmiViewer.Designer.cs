@@ -35,15 +35,17 @@
             this.tabPageInstances = new System.Windows.Forms.TabPage();
             this.lvInstances = new System.Windows.Forms.ListView();
             this.tabPageProperties = new System.Windows.Forms.TabPage();
-            this.tabPageMethods = new System.Windows.Forms.TabPage();
             this.lvProperties = new System.Windows.Forms.ListView();
             this.colName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colCIMType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colOrigins = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colPDescription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tabPageMethods = new System.Windows.Forms.TabPage();
             this.lvMethods = new System.Windows.Forms.ListView();
             this.colNam = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colMDescription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colPDescription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colInP = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colOut = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabControl.SuspendLayout();
             this.tabPageInstances.SuspendLayout();
             this.tabPageProperties.SuspendLayout();
@@ -95,7 +97,7 @@
             this.tabControl.Location = new System.Drawing.Point(243, 39);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(715, 418);
+            this.tabControl.Size = new System.Drawing.Size(715, 417);
             this.tabControl.TabIndex = 5;
             // 
             // tabPageInstances
@@ -104,7 +106,7 @@
             this.tabPageInstances.Location = new System.Drawing.Point(4, 22);
             this.tabPageInstances.Name = "tabPageInstances";
             this.tabPageInstances.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageInstances.Size = new System.Drawing.Size(707, 392);
+            this.tabPageInstances.Size = new System.Drawing.Size(707, 391);
             this.tabPageInstances.TabIndex = 0;
             this.tabPageInstances.Text = "Instances";
             this.tabPageInstances.UseVisualStyleBackColor = true;
@@ -120,7 +122,7 @@
             this.lvInstances.HideSelection = false;
             this.lvInstances.Location = new System.Drawing.Point(6, 6);
             this.lvInstances.Name = "lvInstances";
-            this.lvInstances.Size = new System.Drawing.Size(695, 380);
+            this.lvInstances.Size = new System.Drawing.Size(695, 379);
             this.lvInstances.TabIndex = 3;
             this.lvInstances.UseCompatibleStateImageBehavior = false;
             this.lvInstances.View = System.Windows.Forms.View.Details;
@@ -131,20 +133,10 @@
             this.tabPageProperties.Location = new System.Drawing.Point(4, 22);
             this.tabPageProperties.Name = "tabPageProperties";
             this.tabPageProperties.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageProperties.Size = new System.Drawing.Size(707, 392);
+            this.tabPageProperties.Size = new System.Drawing.Size(707, 391);
             this.tabPageProperties.TabIndex = 1;
             this.tabPageProperties.Text = "Properties";
             this.tabPageProperties.UseVisualStyleBackColor = true;
-            // 
-            // tabPageMethods
-            // 
-            this.tabPageMethods.Controls.Add(this.lvMethods);
-            this.tabPageMethods.Location = new System.Drawing.Point(4, 22);
-            this.tabPageMethods.Name = "tabPageMethods";
-            this.tabPageMethods.Size = new System.Drawing.Size(707, 392);
-            this.tabPageMethods.TabIndex = 2;
-            this.tabPageMethods.Text = "Methods";
-            this.tabPageMethods.UseVisualStyleBackColor = true;
             // 
             // lvProperties
             // 
@@ -162,7 +154,7 @@
             this.lvProperties.HideSelection = false;
             this.lvProperties.Location = new System.Drawing.Point(6, 6);
             this.lvProperties.Name = "lvProperties";
-            this.lvProperties.Size = new System.Drawing.Size(695, 380);
+            this.lvProperties.Size = new System.Drawing.Size(695, 379);
             this.lvProperties.TabIndex = 4;
             this.lvProperties.UseCompatibleStateImageBehavior = false;
             this.lvProperties.View = System.Windows.Forms.View.Details;
@@ -183,6 +175,21 @@
             this.colOrigins.Text = "Origin";
             this.colOrigins.Width = 150;
             // 
+            // colPDescription
+            // 
+            this.colPDescription.Text = "Description";
+            this.colPDescription.Width = 150;
+            // 
+            // tabPageMethods
+            // 
+            this.tabPageMethods.Controls.Add(this.lvMethods);
+            this.tabPageMethods.Location = new System.Drawing.Point(4, 22);
+            this.tabPageMethods.Name = "tabPageMethods";
+            this.tabPageMethods.Size = new System.Drawing.Size(707, 391);
+            this.tabPageMethods.TabIndex = 2;
+            this.tabPageMethods.Text = "Methods";
+            this.tabPageMethods.UseVisualStyleBackColor = true;
+            // 
             // lvMethods
             // 
             this.lvMethods.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -191,13 +198,15 @@
             this.lvMethods.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lvMethods.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colNam,
-            this.colMDescription});
+            this.colMDescription,
+            this.colInP,
+            this.colOut});
             this.lvMethods.FullRowSelect = true;
             this.lvMethods.GridLines = true;
             this.lvMethods.HideSelection = false;
             this.lvMethods.Location = new System.Drawing.Point(6, 6);
             this.lvMethods.Name = "lvMethods";
-            this.lvMethods.Size = new System.Drawing.Size(695, 380);
+            this.lvMethods.Size = new System.Drawing.Size(695, 379);
             this.lvMethods.TabIndex = 5;
             this.lvMethods.UseCompatibleStateImageBehavior = false;
             this.lvMethods.View = System.Windows.Forms.View.Details;
@@ -210,13 +219,21 @@
             // 
             // colMDescription
             // 
+            this.colMDescription.DisplayIndex = 3;
             this.colMDescription.Text = "Description";
             this.colMDescription.Width = 300;
             // 
-            // colPDescription
+            // colInP
             // 
-            this.colPDescription.Text = "Description";
-            this.colPDescription.Width = 150;
+            this.colInP.DisplayIndex = 1;
+            this.colInP.Text = "In Parameters";
+            this.colInP.Width = 120;
+            // 
+            // colOut
+            // 
+            this.colOut.DisplayIndex = 2;
+            this.colOut.Text = "Out Parameters";
+            this.colOut.Width = 120;
             // 
             // frmWmiViewer
             // 
@@ -256,6 +273,8 @@
         private System.Windows.Forms.ColumnHeader colNam;
         private System.Windows.Forms.ColumnHeader colMDescription;
         private System.Windows.Forms.ColumnHeader colPDescription;
+        private System.Windows.Forms.ColumnHeader colInP;
+        private System.Windows.Forms.ColumnHeader colOut;
     }
 }
 

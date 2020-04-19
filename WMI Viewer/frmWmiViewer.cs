@@ -15,6 +15,13 @@ namespace WMI_view
             updateLbox();
         }
 
+        private void updateTabInfo()
+        {
+            tabPageInstances.Text = "Instances (" + lvInstances.Items.Count + ")";
+            tabPageMethods.Text = "Methods (" + lvMethods.Items.Count + ")";
+            tabPageProperties.Text = "Properties (" + lvProperties.Items.Count + ")";
+        }
+
         private void updateLbox()
         {
             Dictionary<String, Dictionary<String, String>> result = new Dictionary<String, Dictionary<String, String>>();
@@ -85,13 +92,15 @@ namespace WMI_view
                 updateLViewInstances(query);
                 updateLViewProperties(pClass);
                 updateLViewMethods(pClass);
-                
+                updateTabInfo();
+
                 tbQuerry.Text = query;
             }
         }
 
         private void btnExec_Click(object sender, EventArgs e)
         {
+            lvClear();
             updateLViewInstances(tbQuerry.Text);
         }
 
@@ -106,7 +115,7 @@ namespace WMI_view
 
         private void lvMethods_DoubleClick(object sender, EventArgs e)
         {
-            if (lvMethods.SelectedItems.Count == 1 && lvMethods.SelectedItems[0].SubItems.Count == 2)
+            if (lvMethods.SelectedItems.Count == 1)
             {
                 frmDescription frmDescription = new frmDescription(lvMethods.SelectedItems[0].Text, lvMethods.SelectedItems[0].SubItems[1].Text);
                 frmDescription.ShowDialog();
